@@ -11,15 +11,20 @@ class Traveler {
     }
     eat() {
         if (this.food < 1) {
-            this.isHealthy = false
+            this.isHealthy = false    
+        }else {
+        this.food= this.food -1
         }
+        // else{
+         //   this.isHealthy= true
+       // }
     }
 }
 class Wagon {
-    constructor(capacity, passengersList = []) {
+    constructor(capacity) {
 
         this.capacity = capacity
-        this.passengersList = passengersList
+        this.passengersList = []
     }
     getAvailableSeatCount() {
         //for(let i =0 ; i<= this.capacity; i++){
@@ -39,54 +44,68 @@ class Wagon {
     shouldQuarantine() {
         // loop 
         //check each pass ishelthy
-        if (this.isHealthy === false) {
-            return true
-        }
-        else {
+        for (let i = 0; i < this.passengersList.length; i++) {
 
-            return false
-        }
+            // make sure
+            if (this.passengersList[i].isHealthy=== false) {
+                return true
+            }
+        } return false
     }
     totalFood() {
         // for and sumition
         let sum = 0
         for (let i = 0; i < this.passengersList.length; i++) {
             sum = sum + this.passengersList[i].food
-
         }
+
+
+        return sum
 
     }
 
 
 }
-class Doctor extends traveler {
- 
+
+class Doctor extends Traveler {
+    constructor(name) {
+
+        super(name)
+    }
 
     heal(traveler) {
 
-        this.isHealthy = true
+        traveler.isHealthy = true
     }
 
 }
+class Hunter extends Traveler {
+    constructor(name) {
+        super(name)
 
-class Hunter extends traveler {
-    constructor(food = 2) {
-
-        this.food = food
+        this.food = 2
     }
     hunt() {
         // make sure
-        this.food = food + 5
+        this.food = this.food + 5
+        //return this.food
     }
-    eat() {
-        if (this.food != 2){
-            this.isHealthy= false
 
+    eat() {
+        if (this.food < 2) {
+            this.food = 0
+            this.isHealthy = false
+        }
+        else {
+            this.food = this.food - 2
         }
     }
-    giveFood(traveler, numOfFoodUnits){
 
-       this.food= numOfFoodUnits  
+    giveFood(traveler, numOfFoodUnits) {
+        if (numOfFoodUnits <= this.food) {
+            this.food = this.food - numOfFoodUnits
+            traveler.food = traveler.food + numOfFoodUnits
+        }
     }
 }
 
